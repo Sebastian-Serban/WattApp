@@ -1,33 +1,44 @@
-// server.js
 const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Enable CORS
 app.use(cors());
 
-// Set up storage engine for multer
+const uploadsDir = 'uploads';
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Directory to save the files
+        cb(null, uploadsDir); 
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Append the original extension
+        cb(null, file.originalname); 
     }
 });
 
 const upload = multer({ storage });
 
-// Define a route to handle file uploads
-app.post('/upload', upload.single('file'), (req, res) => {
-    res.send('File uploaded successfully');
+
+app.post('/upload', upload.array('files'), (req, res) => {
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).send('No files uploaded.');
+    }
+    
+    console.log('Uploaded files:', req.files);
+    res.send('Files uploaded successfully');
 });
 
-// Start the server
+app.get("/export", (req, res) => {
+    // Sebi mach du denn die export logic
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

@@ -1,18 +1,27 @@
-// src/components/FileUploader.js
 import React, { useState } from 'react';
 import axios from 'axios';
 
 const FileUploader = () => {
-    const [file, setFile] = useState(null);
+    const [files, setFiles] = useState([]); 
+    const [uploading, setUploading] = useState(false); 
 
     const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
+        setFiles(event.target.files);  
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (files.length === 0) {
+            alert('Please select at least one file.');
+            return;
+        }
+
+        setUploading(true);
         const formData = new FormData();
-        formData.append('file', file);
+        
+        Array.from(files).forEach(file => {
+            formData.append('files', file); 
+        });
 
         try {
             const response = await axios.post('http://localhost:4000/upload', formData, {
@@ -20,17 +29,21 @@ const FileUploader = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            alert(response.data);
+            alert(response.data);  
         } catch (error) {
-            console.error('Error uploading file:', error);
-            alert('Error uploading file');
+            console.error('Error uploading files:', error);
+            alert('Error uploading files');
+        } finally {
+            setUploading(false); 
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <input type="file" onChange={handleFileChange} />
-            <button type="submit">Upload</button>
+            <input type="file" multiple onChange={handleFileChange} /> 
+            <button type="submit" disabled={uploading}>
+                {uploading ? 'Uploading...' : 'Upload'}
+            </button>
         </form>
     );
 };
