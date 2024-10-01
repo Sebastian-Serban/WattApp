@@ -50,6 +50,8 @@ function FileUploader() {
             <div className="file-uploader">
                 <input
                     type="file"
+                    webkitdirectory=""
+                    directory=""
                     multiple
                     onChange={handleFileChange}
                     disabled={isUploading} 
