@@ -1,65 +1,38 @@
-import React, { useState } from "react";
-import "./FileUploader.css";
+// src/components/FileUploader.js
+import React, { useState } from 'react';
+import axios from 'axios';
 
-function FileUploader() {
-    const [isUploading, setIsUploading] = useState(false);
-    const [uploadStatus, setUploadStatus] = useState("");
+const FileUploader = () => {
+    const [file, setFile] = useState(null);
 
     const handleFileChange = (event) => {
-        const files = event.target.files;
-        if (files.length > 0) {
-            const fileArray = Array.from(files);
-            console.log("Selected files:", fileArray);
-
-            uploadFiles(fileArray);
-        }
+        setFile(event.target.files[0]);
     };
 
-    const uploadFiles = async (files) => {
-        setIsUploading(true);
-        setUploadStatus("Uploading...");
-
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         const formData = new FormData();
-        files.forEach((file) => {
-            formData.append("files", file, file.name);
-        });
+        formData.append('file', file);
 
         try {
-            const response = await fetch("http://localhost:4000/upload", {
-                method: "POST",
-                body: formData,
+            const response = await axios.post('http://localhost:4000/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             });
-
-            if (response.ok) {
-                setUploadStatus("Hochladen erflogreich!");
-                console.log("Hochladen erflogreich!");
-            } else {
-                setUploadStatus("Hochladen Fehlgeschlagen");
-                console.error("Hochladen Fehlgeschlagen");
-            }
+            alert(response.data);
         } catch (error) {
-            setUploadStatus("Error beim Hochladen");
-            console.error("Error beim Hochladen:", error);
-        } finally {
-            setIsUploading(false);
+            console.error('Error uploading file:', error);
+            alert('Error uploading file');
         }
     };
 
     return (
-        <>
-            <div className="file-uploader">
-                <input
-                    type="file"
-                    webkitdirectory=""
-                    directory=""
-                    multiple
-                    onChange={handleFileChange}
-                    disabled={isUploading} 
-                />
-                <p>{uploadStatus}</p>
-            </div>
-        </>
+        <form onSubmit={handleSubmit}>
+            <input type="file" onChange={handleFileChange} />
+            <button type="submit">Upload</button>
+        </form>
     );
-}
+};
 
 export default FileUploader;
