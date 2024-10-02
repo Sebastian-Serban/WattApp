@@ -1,13 +1,44 @@
-const express = require("express");
+const express = require('express');
+const multer = require('multer');
+const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
+
 const app = express();
-const port = "4000";
-const exporter = require("./export")
-const upload = require("./upload")
+const PORT = process.env.PORT || 4000;
 
-app.use("/", exporter);
-app.use("/", upload);
+app.use(cors());
+
+const uploadsDir = 'uploads';
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadsDir); 
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname); 
+    }
+});
+
+const upload = multer({ storage });
 
 
-app.listen(port, (res) => {
-  console.log(port)
-})
+app.post('/upload', upload.array('files'), (req, res) => {
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).send('No files uploaded.');
+    }
+    
+    console.log('Uploaded files:', req.files);
+    res.send('Files uploaded successfully');
+});
+
+app.get("/export", (req, res) => {
+    // Sebi mach du denn die export logic
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});

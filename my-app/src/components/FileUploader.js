@@ -1,65 +1,51 @@
-import React, { useState } from "react";
-import "./FileUploader.css";
+import React, { useState } from 'react';
+import axios from 'axios';
 
-function FileUploader() {
-    const [isUploading, setIsUploading] = useState(false);
-    const [uploadStatus, setUploadStatus] = useState("");
+const FileUploader = () => {
+    const [files, setFiles] = useState([]); 
+    const [uploading, setUploading] = useState(false); 
 
     const handleFileChange = (event) => {
-        const files = event.target.files;
-        if (files.length > 0) {
-            const fileArray = Array.from(files);
-            console.log("Selected files:", fileArray);
-
-            uploadFiles(fileArray);
-        }
+        setFiles(event.target.files);  
     };
 
-    const uploadFiles = async (files) => {
-        setIsUploading(true);
-        setUploadStatus("Uploading...");
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (files.length === 0) {
+            alert('Please select at least one file.');
+            return;
+        }
 
+        setUploading(true);
         const formData = new FormData();
-        files.forEach((file) => {
-            formData.append("files", file, file.name);
+        
+        Array.from(files).forEach(file => {
+            formData.append('files', file); 
         });
 
         try {
-            const response = await fetch("http://localhost:4000/upload", {
-                method: "POST",
-                body: formData,
+            const response = await axios.post('http://localhost:4000/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             });
-
-            if (response.ok) {
-                setUploadStatus("Hochladen erflogreich!");
-                console.log("Hochladen erflogreich!");
-            } else {
-                setUploadStatus("Hochladen Fehlgeschlagen");
-                console.error("Hochladen Fehlgeschlagen");
-            }
+            alert(response.data);  
         } catch (error) {
-            setUploadStatus("Error beim Hochladen");
-            console.error("Error beim Hochladen:", error);
+            console.error('Error uploading files:', error);
+            alert('Error uploading files');
         } finally {
-            setIsUploading(false);
+            setUploading(false); 
         }
     };
 
     return (
-        <>
-            <div className="file-uploader">
-                <input
-                    type="file"
-                    webkitdirectory=""
-                    directory=""
-                    multiple
-                    onChange={handleFileChange}
-                    disabled={isUploading} 
-                />
-                <p>{uploadStatus}</p>
-            </div>
-        </>
+        <form onSubmit={handleSubmit}>
+            <input type="file" multiple onChange={handleFileChange} /> 
+            <button type="submit" disabled={uploading}>
+                {uploading ? 'Uploading...' : 'Upload'}
+            </button>
+        </form>
     );
-}
+};
 
 export default FileUploader;
