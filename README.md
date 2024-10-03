@@ -7,5 +7,6 @@
 ## Installation
 
 1. Abhängigkeiten installieren
-2. `$ cd my-app/src/backend/ && node app.js`
-3. `$ cd my-app/ && npm run start`
+2. `$ cd my-app/ && npm install`
+3. `$ cd my-app/src/backend/ && node app.js`
+4. `$ cd my-app/ && npm run start`
