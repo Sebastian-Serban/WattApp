@@ -179,7 +179,9 @@ const ChartComponent = () => {
     function dateFilter(unit, targetChart) {
         const newestDate = getNewestDate(targetChart === 1 ? id742Usage : id742Value);
         let target = targetChart === 1 ? myChart1.current : myChart2.current;
-
+        if (! newestDate) {
+            return null
+        }
         if (unit === "hour") {
             const prevHour = new Date(newestDate.getTime());
             prevHour.setHours(prevHour.getHours() - 1);
