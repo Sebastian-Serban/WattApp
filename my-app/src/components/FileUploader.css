@@ -3,12 +3,18 @@
     border: 1px dashed #1269cc;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    width: 60%;
-    height: 20vh;
     padding-top: 5vh;
-    margin-top: 5vh;
     padding-bottom: 10%;
+    margin-top: 10px;
+    height: 175px;
+
+}
+
+.import-export-wrapper {
+    width: 40%;
+
 }
 
 button {
@@ -50,23 +56,23 @@ button:not(.pressed):hover {
 
 @media (max-width: 768px) {
     .file-uploader-container {
-        width: 90%; 
-        height: auto; 
+        width: 90%;
+        height: auto;
         padding: 2vh;
         margin-top: 3vh;
     }
 
     button {
-        width: 80%; 
-        padding: 10px; 
-        font-size: 16px; 
+        width: 80%;
+        padding: 10px;
+        font-size: 16px;
     }
 
     .custom-file-upload {
-        width: 80%; 
-        text-align: center; 
-        padding: 10px; 
-        font-size: 14px; 
+        width: 80%;
+        text-align: center;
+        padding: 10px;
+        font-size: 14px;
     }
 
     .file-uploader-container {

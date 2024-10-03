@@ -68,9 +68,11 @@ const FileUploader = () => {
     };
 
     return (
+        <div className="import-export-wrapper">
+            <h2>Dateien importieren</h2>
         <form onSubmit={handleSubmit} className='file-uploader-container'>
             <div>
-                <label>Wähle Datentyp: </label>
+                <label>Dateityp: </label>
                 <select value={uploadType} onChange={handleTypeChange}> 
                     <option value="sdat">Sdat</option>
                     <option value="esl">Esl</option>
@@ -96,6 +98,7 @@ const FileUploader = () => {
                 </button>
             </div>
         </form>
+        </div>
     );
 };
 
