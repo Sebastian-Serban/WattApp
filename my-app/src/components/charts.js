@@ -17,7 +17,7 @@ const ChartComponent = () => {
     const id735Value = [];
 
     useEffect(() => {
-        fetch('./output.json')
+        fetch('http://localhost:4000/data')
             .then(response => response.json())
             .then(data => {
                 data.ID742.data.forEach(item => {
@@ -26,6 +26,7 @@ const ChartComponent = () => {
                 data.ID735.data.forEach(item => {
                     id735Usage.push({ x: item.ts, y: item.usage });
                 });
+
 
                 myChart1.current.data.datasets[0].data = id742Usage;
                 myChart1.current.data.datasets[1].data = id735Usage;
