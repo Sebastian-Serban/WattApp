@@ -16,6 +16,7 @@ const sdatDir = path.join(uploadsDir, 'Sdat');
 const eslDir = path.join(uploadsDir, 'Esl');
 
 
+
 if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir, { recursive: true });
 }
@@ -133,7 +134,13 @@ app.get("/export", (req, res) => {
 });
 
 
-
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+exec(`pip install -r requirements.txt`, (error, stdout, stderr) => {
+    if (error) {
+        console.log(error)
+    } else {
+        console.log("requirements installed.")
+        app.listen(PORT, () => {
+            console.log(`Server running on http://localhost:${PORT}`);
+        });
+    }
 });
