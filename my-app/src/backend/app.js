@@ -54,6 +54,9 @@ app.post('/upload', upload.array('files'), (req, res) => {
 
 app.get("/data", (req, res) => {
   exec(`python main.py`, (error, stdout, stderr) => {
+    if (error){
+        console.log(error)
+    }
     fs.readFile('./output.json', 'utf8', (err, data) => {
       if (err) {
         console.error("Error reading the file:", err);
