@@ -52,36 +52,32 @@ app.post('/upload', upload.array('files'), (req, res) => {
 });
 
 app.get("/data", (req, res) => {
-    const filePath = './output.json';
+    const filePath = './output.json'
 
-    // Check if output.json exists
     if (fs.existsSync(filePath)) {
-        // If file exists, read and send the data
         fs.readFile(filePath, 'utf8', (err, data) => {
             if (err) {
-                return res.status(500).send({ error: "Error reading the file" });
+                return res.status(500).send({ error: "Error reading the file" })
             }
 
-            const jsonData = JSON.parse(data);
-            res.send(jsonData);
-        });
+            const jsonData = JSON.parse(data)
+            res.send(jsonData)
+        })
     } else {
-        // If file doesn't exist, execute the Python script
         exec(`python main.py`, (error, stdout, stderr) => {
             if (error) {
-                console.error("Error executing Python script:", error);
-                return res.status(500).send({ error: "Error executing Python script" });
+                console.error("Error executing Python script:", error)
+                return res.status(500).send({ error: "Error executing Python script" })
             }
 
-            // After the script execution, read output.json
             fs.readFile(filePath, 'utf8', (err, data) => {
                 if (err) {
-                    console.error("Error reading the file:", err);
-                    return res.status(500).send({ error: "Error reading the file after script execution" });
+                    console.error("Error reading the file:", err)
+                    return res.status(500).send({ error: "Error reading the file after script execution" })
                 }
 
-                const jsonData = JSON.parse(data);
-                res.send(jsonData);
+                const jsonData = JSON.parse(data)
+                res.send(jsonData)
             });
         });
     }
