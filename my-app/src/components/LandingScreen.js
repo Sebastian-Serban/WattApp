@@ -1,13 +1,12 @@
 import React from "react";
 import "./LandingScreen.css"; 
 import FileUploader from "./FileUploader"; 
+import Navbar from "./Navbar";
 
 function LandingScreen() {
     return (
         <div className="container">
-            <h1>
-                Watt App
-            </h1>
+            <Navbar/>
             <FileUploader />
         </div>
     );
