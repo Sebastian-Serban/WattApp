@@ -20,7 +20,7 @@ button {
     margin-top: 2vh;
 }
 
-button:hover {
+button:not(.pressed):hover {
     background: #1269cc;
     color: #fff;
     transition: all 0.3s ease-out;
