@@ -49,7 +49,7 @@ app.post('/upload', upload.array('files'), (req, res) => {
     }
 
     console.log('Uploaded files:', req.files);
-    res.send('Files uploaded successfully');
+    res.sendStatus('Files uploaded successfully', 200);
 });
 
 app.get("/export", (req, res) => {
