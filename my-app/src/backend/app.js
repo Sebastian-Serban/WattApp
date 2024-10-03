@@ -47,10 +47,10 @@ const storage = multer.diskStorage({
 const upload = multer({storage})
 app.post('/upload', upload.array('files'), (req, res) => {
     if (!req.files || req.files.length === 0) {
-        return res.status(400).send('No files uploaded.');
+        return res.status(400).send('Keine Dateien hochgeladen');
     }
     console.log('Uploaded files:', req.files);
-    res.status(201).send('Files uploaded successfully');
+    res.status(201).send('Dateien wurden erfolgreich hochgeladen.');
 });
 
 app.get("/data", (req, res) => {
