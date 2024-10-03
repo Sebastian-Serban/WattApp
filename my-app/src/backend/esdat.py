@@ -4,7 +4,7 @@ from datetime import datetime
 from find_sdat import filtered
 import json
 
-esdat = r"C:\Users\serba\Downloads\XML-Files\SDAT-Files"
+esdat = r"./uploads/Sdat"
 esdatdir = filtered
 
 
