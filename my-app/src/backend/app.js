@@ -83,27 +83,40 @@ app.get("/data", (req, res) => {
     }
 });
 
-app.get("/export", (req, res) => {
-  const options = {
-    root: path.join(__dirname)
-  };
-
-  const csvData = csvjson.toCSV(array, {
-    headers: 'key'
-  });
-
-  fs.writeFile('output.csv', csvData, 'utf-8', (err) => {
-    if (err) {
-      console.error(err);
-      return;
+app.get("/export", async (req, res) => {
+    const options = {
+        root: path.join(__dirname)
     }
-    console.log('Conversion successful. CSV file created.');
-    res.sendFile("./output.csv", options,(err, result) => {
-      if (err) {
-        res.status(500)
-      }
+
+    fs.readFile('./output.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error("Error reading JSON file:", err)
+            res.status(500).send("Error reading data")
+            return
+        }
+
+        const array = JSON.parse(data);
+
+        const csvData = csvjson.toCSV(array, {
+            headers: 'key'
+        })
+
+        fs.writeFile('output.csv', csvData, 'utf-8', (err) => {
+            if (err) {
+                console.error(err);
+                res.status(500).send("Error writing CSV")
+                return
+            }
+
+            console.log('Conversion successful. CSV file created.')
+            res.sendFile("./output.csv", options, (err, result) => {
+                if (err) {
+                    console.error("Error sending CSV file:", err)
+                    res.status(500).send("Error sending CSV")
+                }
+            })
+        })
     })
-  });
 });
 
 
