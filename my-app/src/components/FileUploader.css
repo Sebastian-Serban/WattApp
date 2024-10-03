@@ -1,0 +1,97 @@
+
+.file-uploader-container {
+    border: 1px dashed #1269cc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+    height: 20vh;
+    padding-top: 5vh;
+    margin-top: 5vh;
+    padding-bottom: 10%;
+}
+
+button {
+    background-color: transparent;
+    color: #1269cc;
+    padding: 8px 20px;
+    border: 1px solid #1269cc;
+    transition: all 0.3s ease-out;
+    margin-top: 2vh;
+}
+
+button:not(.pressed):hover {
+    background: #1269cc;
+    color: #fff;
+    transition: all 0.3s ease-out;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: #1269cc;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: 'Open Sans', sans-serif;
+    margin-top: 2vh;
+}
+
+.custom-file-upload:hover {
+    background-color: #135db1;
+}
+
+.file-input {
+    display: none;
+}
+
+
+@media (max-width: 768px) {
+    .file-uploader-container {
+        width: 90%; 
+        height: auto; 
+        padding: 2vh;
+        margin-top: 3vh;
+    }
+
+    button {
+        width: 80%; 
+        padding: 10px; 
+        font-size: 16px; 
+    }
+
+    .custom-file-upload {
+        width: 80%; 
+        text-align: center; 
+        padding: 10px; 
+        font-size: 14px; 
+    }
+
+    .file-uploader-container {
+        padding: 10px; /* Reduce padding for small screens */
+        margin-top: 10px;
+        border: 1px dashed #1269cc; /* Ensure the border is visible */
+    }
+}
+
+@media (max-width: 480px) {
+    .file-uploader-container {
+        width: 95%; /* Further reduce the width for very small screens */
+        height: auto;
+        padding: 15px;
+    }
+
+    button {
+        width: 100%; /* Make the button full width */
+        padding: 12px; /* Increase padding for better usability */
+        font-size: 14px; /* Adjust font size for smaller screens */
+    }
+
+    .custom-file-upload {
+        width: 100%; /* Make custom button full width */
+        padding: 12px;
+        font-size: 12px; /* Slightly smaller font size for compact view */
+    }
+}

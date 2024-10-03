@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import "./FileUploader.css"; 
 
 const FileUploader = () => {
     const [files, setFiles] = useState([]); 
@@ -18,17 +19,15 @@ const FileUploader = () => {
         const fileNames = Array.from(files).map(file => file.name);
         
         if (uploadType === 'sdat') {
-           
             const invalidFiles = fileNames.filter(fileName => !fileName.includes('LIPPUNEREM'));
             if (invalidFiles.length > 0) {
-                alert(`The following files do not match the required Sdat naming pattern (LIPPUNEREM):\n${invalidFiles.join(', ')}`);
+                alert(`Die folgenden Files passen nicht zum Namensmuster von sdat-Files (LIPPUNEREM):\n${invalidFiles.join(', ')}`);
                 return false;
             }
         } else if (uploadType === 'esl') {
-            
             const invalidFiles = fileNames.filter(fileName => !fileName.includes('EdmRegisterWertExport'));
             if (invalidFiles.length > 0) {
-                alert(`The following files do not match the required ESL naming pattern (EdmRegisterWertExport):\n${invalidFiles.join(', ')}`);
+                alert(`Die folgenden Files passen nicht zum Namensmuster von Esl-Files (EdmRegisterWertExport):\n${invalidFiles.join(', ')}`);
                 return false;
             }
         }
@@ -38,7 +37,7 @@ const FileUploader = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (files.length === 0) {
-            alert('Please select at least one file.');
+            alert('Bitte wählen Sie mindestens 1 File.');
             return;
         }
 
@@ -62,26 +61,37 @@ const FileUploader = () => {
             alert(response.data);  
         } catch (error) {
             console.error('Error uploading files:', error);
-            alert('Error uploading files');
+            alert('Fehler beim Hochladen der Files.');
         } finally {
             setUploading(false); 
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className='file-uploader-container'>
             <div>
-                <label>Select Upload Type: </label>
+                <label>Wähle Datentyp: </label>
                 <select value={uploadType} onChange={handleTypeChange}> 
                     <option value="sdat">Sdat</option>
                     <option value="esl">Esl</option>
                 </select>
             </div>
+
             <div>
-                <input type="file" multiple onChange={handleFileChange} /> 
+                <label htmlFor="file-upload" className="custom-file-upload">
+                    Dateien auswählen
+                </label>
+                <input
+                    id="file-upload"
+                    type="file"
+                    className="file-input"
+                    multiple
+                    onChange={handleFileChange}
+                />
             </div>
+
             <div>
-                <button type="submit" disabled={uploading}>
+                <button type="submit" disabled={uploading} className='btn-outline'>
                     {uploading ? 'Uploading...' : 'Upload'}
                 </button>
             </div>
