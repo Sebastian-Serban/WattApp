@@ -88,6 +88,10 @@ const ChartComponent = () => {
                         }
                     },
                     y: {
+                        title: {
+                            display: true,
+                            text: 'kw/h' // Label for the y-axis
+                        },
                         min: 0,
                         max: 350
                     }
@@ -133,6 +137,10 @@ const ChartComponent = () => {
                         }
                     },
                     y: {
+                        title: {
+                            display: true,
+                            text: 'kw/h' // Label for the y-axis
+                        },
                         min: 0,
                         max: 100000
                     }
@@ -222,11 +230,11 @@ const ChartComponent = () => {
                     <canvas ref={chartRef1}></canvas>
                     <div className='button-container'>
                         <div className='button-wrapper'>
-                            <button className="chart-button" onClick={() => dateFilter("hour", 1)}>Hour</button>
-                            <button className="chart-button" onClick={() => dateFilter("day", 1)}>Day</button>
-                            <button className="chart-button pressed" onClick={() => dateFilter("month", 1)}>Month</button>
-                            <button className="chart-button" onClick={() => dateFilter("year", 1)}>Year</button>
-                            <button className="chart-button" onClick={() => dateFilter("max", 1)}>All time</button>
+                            <button className="chart-button" onClick={() => dateFilter("hour", 1)}>Stunde</button>
+                            <button className="chart-button" onClick={() => dateFilter("day", 1)}>Tag</button>
+                            <button className="chart-button pressed" onClick={() => dateFilter("month", 1)}>Monat</button>
+                            <button className="chart-button" onClick={() => dateFilter("year", 1)}>Jahr</button>
+                            <button className="chart-button" onClick={() => dateFilter("max", 1)}>Max.</button>
                         </div>
                     </div>
                 </div>
@@ -236,11 +244,11 @@ const ChartComponent = () => {
                     <canvas ref={chartRef2}></canvas>
                     <div className='button-container'>
                         <div className='button-wrapper'>
-                            <button className="chart-button" onClick={() => dateFilter("hour", 2)}>Hour</button>
-                            <button className="chart-button" onClick={() => dateFilter("day", 2)}>Day</button>
-                            <button className="chart-button pressed" onClick={() => dateFilter("month", 2)}>Month</button>
-                            <button className="chart-button" onClick={() => dateFilter("year", 2)}>Year</button>
-                            <button className="chart-button" onClick={() => dateFilter("max", 2)}>All time</button>
+                            <button className="chart-button" onClick={() => dateFilter("hour", 2)}>Stunde</button>
+                            <button className="chart-button" onClick={() => dateFilter("day", 2)}>Tag</button>
+                            <button className="chart-button pressed" onClick={() => dateFilter("month", 2)}>Monat</button>
+                            <button className="chart-button" onClick={() => dateFilter("year", 2)}>Jahr</button>
+                            <button className="chart-button" onClick={() => dateFilter("max", 2)}>Max.</button>
                         </div>
                     </div>
                 </div>

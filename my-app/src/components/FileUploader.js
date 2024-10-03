@@ -21,13 +21,13 @@ const FileUploader = () => {
         if (uploadType === 'sdat') {
             const invalidFiles = fileNames.filter(fileName => !fileName.includes('LIPPUNEREM'));
             if (invalidFiles.length > 0) {
-                alert(`Die folgenden Files passen nicht zum Namensmuster von sdat-Files (LIPPUNEREM):\n${invalidFiles.join(', ')}`);
+                alert(`Die folgenden Dateien passen nicht zum Namensmuster von sdat-Dateien (LIPPUNEREM):\n${invalidFiles.join(', ')}`);
                 return false;
             }
         } else if (uploadType === 'esl') {
             const invalidFiles = fileNames.filter(fileName => !fileName.includes('EdmRegisterWertExport'));
             if (invalidFiles.length > 0) {
-                alert(`Die folgenden Files passen nicht zum Namensmuster von Esl-Files (EdmRegisterWertExport):\n${invalidFiles.join(', ')}`);
+                alert(`Die folgenden Dateien passen nicht zum Namensmuster von Esl-Dateien (EdmRegisterWertExport):\n${invalidFiles.join(', ')}`);
                 return false;
             }
         }
@@ -37,7 +37,7 @@ const FileUploader = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (files.length === 0) {
-            alert('Bitte wählen Sie mindestens 1 File.');
+            alert('Bitte wählen Sie mindestens eine Datei.');
             return;
         }
 
@@ -61,7 +61,7 @@ const FileUploader = () => {
             alert(response.data);  
         } catch (error) {
             console.error('Error uploading files:', error);
-            alert('Fehler beim Hochladen der Files.');
+            alert('Fehler beim Hochladen der Dateien');
         } finally {
             setUploading(false); 
         }
@@ -94,7 +94,7 @@ const FileUploader = () => {
 
             <div>
                 <button type="submit" disabled={uploading} className='btn-outline'>
-                    {uploading ? 'Uploading...' : 'Upload'}
+                    {uploading ? 'Lädt hoch...' : 'Hochladen'}
                 </button>
             </div>
         </form>
