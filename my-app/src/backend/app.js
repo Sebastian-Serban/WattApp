@@ -7,6 +7,7 @@ const csvjson = require("csvjson");
 const app = express();
 const PORT = process.env.PORT || 4000;
 const { exec } = require('child_process');
+const zip = require('express-zip');
 
 app.use(cors());
 
@@ -83,41 +84,54 @@ app.get("/data", (req, res) => {
     }
 });
 
-app.get("/export", async (req, res) => {
-    const options = {
-        root: path.join(__dirname)
-    }
-
-    fs.readFile('./output.json', 'utf8', (err, data) => {
+app.get("/export", (req, res) => {
+    const filePath = './output.json';
+    fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
-            console.error("Error reading JSON file:", err)
-            res.status(500).send("Error reading data")
-            return
+            console.error(err);
+            return res.status(500).send('Error reading JSON file.');
         }
 
-        const array = JSON.parse(data);
+        let jsonData;
+        try {
+            jsonData = JSON.parse(data);
+        } catch (e) {
+            return res.status(400).send("Invalid JSON format.");
+        }
 
-        const csvData = csvjson.toCSV(array, {
-            headers: 'key'
-        })
+        if (!jsonData.ID742 || !jsonData.ID735) {
+            return res.status(400).send("Invalid data. Missing ID742 or ID735.");
+        }
 
-        fs.writeFile('output.csv', csvData, 'utf-8', (err) => {
-            if (err) {
-                console.error(err);
-                res.status(500).send("Error writing CSV")
-                return
-            }
+        const id742Data = jsonData.ID742.data;
+        const id735Data = jsonData.ID735.data;
 
-            console.log('Conversion successful. CSV file created.')
-            res.sendFile("./output.csv", options, (err, result) => {
-                if (err) {
-                    console.error("Error sending CSV file:", err)
-                    res.status(500).send("Error sending CSV")
-                }
-            })
-        })
-    })
+        const csvDataID742 = csvjson.toCSV(id742Data.map(item => ({
+            timestamp: item.ts,
+            value: item.value
+        })), {
+            headers: 'key',
+            delimiter: ';'
+        });
+
+        const csvDataID735 = csvjson.toCSV(id735Data.map(item => ({
+            timestamp: item.ts,
+            value: item.value
+        })), {
+            headers: 'key',
+            delimiter: ';'
+        });
+
+        fs.writeFileSync('ID742.csv', csvDataID742, 'utf-8');
+        fs.writeFileSync('ID735.csv', csvDataID735, 'utf-8');
+
+        res.zip([
+            { path: './ID742.csv', name: 'ID742.csv' },
+            { path: './ID735.csv', name: 'ID735.csv' }
+        ]);
+    });
 });
+
 
 
 app.listen(PORT, () => {

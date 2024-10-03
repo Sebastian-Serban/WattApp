@@ -4,7 +4,7 @@ from datetime import datetime
 from find_sdat import filtered
 import json
 
-esdat = r"./uploads/Sdat"
+esdat = r"C:\Users\serba\Downloads\XML-Files\SDAT-Files"
 esdatdir = filtered
 
 
@@ -15,8 +15,16 @@ res = {"data": [
       }
     ]}
 
-def get_esdat(timePeriods): 
-    timeIntervals = {"ID742": {"data": []}, "ID735": {"data": []}}
+def get_esdat(timePeriods):
+    timeIntervals = {"ID742": {"data": [{
+                "ts": "2019-03-01T00:00:00Z",
+                "value": 12817.8,
+                "usage": 9.000000000000002
+            }]}, "ID735": {"data": [{
+                "ts": "2019-03-01T00:00:00Z",
+                "value": 12817.8,
+                "usage": 9.000000000000002
+            }]}}
     sum1 = 0
     sum2 = 0
     target1 = timePeriods[0][1]
@@ -39,12 +47,12 @@ def get_esdat(timePeriods):
         if start_date.year != time_period_date.year or start_date.month != time_period_date.month:
             sum1 = 0
             sum2 = 0
-            
+
             timePeriods.pop(0)
-            
+
             if not timePeriods:
                 break
-            
+
             target1 = timePeriods[0][1]
             target2 = timePeriods[0][2]
 
@@ -52,14 +60,15 @@ def get_esdat(timePeriods):
             try:
                 volumes = map(lambda x: x.text, document.xpath("//rsm:Volume", namespaces={'rsm': 'http://www.strom.ch'}))
                 sums = sum([float(y) for y in volumes])
-                if not sum1:
-                    timeIntervals["ID742"]["data"].append({"ts":timePeriods[0][0]+"Z", "value":target1, "usage":sums})
-                    sum1 = target1
-                    sum1 += sums
-                    timeIntervals["ID742"]["data"].append({"ts":start, "value":sum1, "usage":sums})
-                else:
-                    sum1 += sums
-                    timeIntervals["ID742"]["data"].append({"ts":start, "value":sum1, "usage":sums})
+                if start != timeIntervals["ID742"]["data"][-1]["ts"]:
+                    if not sum1:
+                        timeIntervals["ID742"]["data"].append({"ts":timePeriods[0][0]+"Z", "value":target1, "usage":sums})
+                        sum1 = target1
+                        sum1 += sums
+                        timeIntervals["ID742"]["data"].append({"ts":start, "value":sum1, "usage":sums})
+                    else:
+                        sum1 += sums
+                        timeIntervals["ID742"]["data"].append({"ts":start, "value":sum1, "usage":sums})
             except Exception as e:
                 print(f"Error processing file: {e}")
                 continue
@@ -67,14 +76,15 @@ def get_esdat(timePeriods):
             try:
                 volumes = map(lambda x: x.text, document.xpath("//rsm:Volume", namespaces={'rsm': 'http://www.strom.ch'}))
                 sums = sum([float(y) for y in volumes])
-                if not sum2:
-                    timeIntervals["ID735"]["data"].append({"ts":timePeriods[0][0]+"Z", "value":target2, "usage":sums})
-                    sum2 = target2
-                    sum2 += sums
-                    timeIntervals["ID735"]["data"].append({"ts":start, "value":sum2, "usage":sums})
-                else:
-                    sum2 += sums
-                    timeIntervals["ID735"]["data"].append({"ts":start, "value":sum2, "usage":sums})
+                if start != timeIntervals["ID735"]["data"][-1]["ts"]:
+                    if not sum2:
+                        timeIntervals["ID735"]["data"].append({"ts":timePeriods[0][0]+"Z", "value":target2, "usage":sums})
+                        sum2 = target2
+                        sum2 += sums
+                        timeIntervals["ID735"]["data"].append({"ts":start, "value":sum2, "usage":sums})
+                    else:
+                        sum2 += sums
+                        timeIntervals["ID735"]["data"].append({"ts":start, "value":sum2, "usage":sums})
             except Exception as e:
                 print(f"Error processing file: {e}")
                 continue

@@ -15,11 +15,11 @@ const ExportDialog = () => {
                     responseType: 'blob'
                 })
 
-                const blob = new Blob([response.data], { type: 'text/csv' })
+                const blob = new Blob([response.data], { type: 'application/zip' })
                 const downloadUrl = window.URL.createObjectURL(blob)
                 const link = document.createElement('a')
                 link.href = downloadUrl
-                link.setAttribute('download', 'data.csv')
+                link.setAttribute('download', 'data.zip')
                 document.body.appendChild(link)
                 link.click()
                 link.remove()
