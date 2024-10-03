@@ -47,9 +47,8 @@ app.post('/upload', upload.array('files'), (req, res) => {
     if (!req.files || req.files.length === 0) {
         return res.status(400).send('No files uploaded.');
     }
-
     console.log('Uploaded files:', req.files);
-    res.sendStatus('Files uploaded successfully', 200);
+    res.status(201).send('Files uploaded successfully');
 });
 
 app.get("/export", (req, res) => {
