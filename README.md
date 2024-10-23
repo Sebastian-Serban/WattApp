@@ -9,3 +9,6 @@
 1. Abhängigkeiten installieren
 2. `$ cd my-app/ && npm install && cd src/backend/ && node app.js`
 3. `$ cd my-app/ && npm run start`
+
+## Testdaten
+Sowohl SDAT-Files als auch ESL-Files sind fürs Testen im "XML_Files.zip" File verfügbar
